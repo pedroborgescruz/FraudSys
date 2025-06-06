@@ -20,19 +20,19 @@ public class GestaoLimitesController : Controller
     {
         return View();
     }
-    public IActionResult ViewCadastrarLimite() 
+    public IActionResult CadastrarLimite() 
     {
         return View();
     }
-    public IActionResult ViewBuscarLimite() 
+    public IActionResult BuscarLimite() 
     {
         return View();
     }
-    public IActionResult ViewAtualizarLimite() 
+    public IActionResult AtualizarLimite() 
     {
         return View();
     }
-    public IActionResult ViewRemoverLimite() 
+    public IActionResult RemoverLimite() 
     {
         return View();
     }
@@ -47,12 +47,13 @@ public class GestaoLimitesController : Controller
     public async Task<IActionResult> Cadastrar(Limite limite) 
     {
         await _repository.Cadastrar(limite);
-        return Ok();
+        return RedirectToAction("Index");
     }
 
     [HttpGet]
     public async Task<IActionResult> Buscar(string agencia, string conta) {
         var lista = await _repository.Buscar(agencia, conta);
+        Console.WriteLine(lista);
         return Ok(lista);
     }
 
