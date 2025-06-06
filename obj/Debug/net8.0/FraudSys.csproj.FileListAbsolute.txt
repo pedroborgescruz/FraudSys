@@ -28,3 +28,4 @@
 /Users/pedroborges/new/FraudSys/obj/Debug/net8.0/FraudSys.pdb
 /Users/pedroborges/new/FraudSys/obj/Debug/net8.0/FraudSys.genruntimeconfig.cache
 /Users/pedroborges/new/FraudSys/obj/Debug/net8.0/ref/FraudSys.dll
+/Users/pedroborges/new/FraudSys/obj/Debug/net8.0/FraudSys.sourcelink.json

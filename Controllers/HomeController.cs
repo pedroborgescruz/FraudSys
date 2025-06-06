@@ -18,7 +18,27 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
+    public IActionResult GestaoLimites() 
+    {
+        return View();
+    }
+
+    public IActionResult CadastrarLimite() 
+    {
+        return View();
+    }
+
+    public IActionResult BuscarLimite() 
+    {
+        return View();
+    }
+
+    public IActionResult AtualizarLimite() 
+    {
+        return View();
+    }
+
+    public IActionResult RemoverLimite() 
     {
         return View();
     }

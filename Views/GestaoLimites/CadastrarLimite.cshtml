@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Gestão de Limites - Cadastrar";
+}
+
+@model FraudSys.Models.Limite;
+
+<div class="text-center">
+    <h1 class="display-4">Gestão de Limites</h1>
+    <h2 class="display-6">Cadastrar limite</h1>
+</div>
+
+<form asp-action="NovoCadastro" asp-controller="GestaoLimites">
+    <label>CPF</label>
+    <input class="form-control mb-2" type="string" placeholder="XXX.XXX.XXX-XX" asp-for="cpf" />
+    <label>Número da agência</label>
+    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" />
+    <label>Número da conta</label>
+    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" />
+    <label>Limite PIX R$</label>
+    <input class="form-control mb-2" type="decimal" placeholder="0" asp-for="limitePix" step="0.01" />
+
+    <button class="btn btn-primary mt-4" type="submit">Cadastrar</button>
+</form>

@@ -18,12 +18,28 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /Users/pedroborges/new/FraudSys
 build_property._RazorSourceGeneratorDebug = 
 
-[/Users/pedroborges/new/FraudSys/Views/Home/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+[/Users/pedroborges/new/FraudSys/Views/GestaoLimites/AtualizarLimite.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VzdGFvTGltaXRlcy9BdHVhbGl6YXJMaW1pdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/pedroborges/new/FraudSys/Views/Home/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+[/Users/pedroborges/new/FraudSys/Views/GestaoLimites/BuscarLimite.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VzdGFvTGltaXRlcy9CdXNjYXJMaW1pdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/pedroborges/new/FraudSys/Views/GestaoLimites/CadastrarLimite.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VzdGFvTGltaXRlcy9DYWRhc3RyYXJMaW1pdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/pedroborges/new/FraudSys/Views/GestaoLimites/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VzdGFvTGltaXRlcy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/pedroborges/new/FraudSys/Views/GestaoLimites/RemoverLimite.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvR2VzdGFvTGltaXRlcy9SZW1vdmVyTGltaXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/pedroborges/new/FraudSys/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/pedroborges/new/FraudSys/Views/Shared/Error.cshtml]
