@@ -50,11 +50,18 @@ public class GestaoLimitesController : Controller
         return RedirectToAction("Index");
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Buscar(string agencia, string conta) {
-        var lista = await _repository.Buscar(agencia, conta);
-        Console.WriteLine(lista);
-        return Ok(lista);
+    [HttpPost]
+    public async Task<IActionResult> Buscar(Limite limite) {
+        var res = await _repository.Buscar(limite.agencia, limite.conta);
+
+        if (res != null) {
+            return View("BuscarLimite", res);
+        }
+        else {
+            ViewBag.Message = "Nenhum resultado encontrado.";
+            return View("BuscarLimite");
+        }
+    
     }
 
     [HttpPut]

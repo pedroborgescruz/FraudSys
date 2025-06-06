@@ -2,7 +2,33 @@
     ViewData["Title"] = "Gestão de Limites - Buscar";
 }
 
+@model FraudSys.Models.Limite;
+
 <div class="text-center">
     <h1 class="display-4">Gestão de Limites</h1>
     <h2 class="display-6">Buscar limite</h1>
 </div>
+
+<form asp-action="Buscar" asp-controller="GestaoLimites">
+    <label>Número da agência</label>
+    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" />
+    <label>Número da conta</label>
+    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" />
+
+    <button class="btn btn-primary mt-4" type="submit">Buscar</button>
+</form>
+
+@if (Model != null)
+{
+    <div class="alert alert-success mt-4">
+        <strong>Sucesso! Há o seguinte limite para a conta solicitada:</strong><br />
+        CPF: @Model.cpf<br />
+        Agência: @Model.agencia<br />
+        Conta: @Model.conta<br />
+        Limite: @Model.limitePix
+    </div>
+}
+else if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning mt-4">@ViewBag.Message</div>
+}
