@@ -1,36 +1,18 @@
-using System.ComponentModel.DataAnnotations;
+using Amazon.DynamoDBv2.DataModel;
 
-namespace FraudSys.Models;
+namespace FraudSys.Models {
 
-/// <summary>
-/// Classe <c>Limite</c> modela o limite PIX associado à conta de um cliente.
-/// </summary>
-public class Limite {
-    
-    public required string cpf {get; set;}     
-    public required string agencia {get; set;}
-    public required string conta {get; set;}
-    public required decimal limitePix {get; set;}
+    [DynamoDBTable("limites")]
+    public class Limite {
 
-    public Limite() { }
+        [DynamoDBProperty]
+        public string cpf {get; set;} = default!; 
+        [DynamoDBHashKey("agencia")]
+        public string agencia {get; set;} = default!;
+        [DynamoDBRangeKey("conta")]
+        public string conta {get; set;} = default!;
+        [DynamoDBProperty]
+        public decimal limitePix {get; set;} = default!;
 
-    public Limite(string cpf, string agencia, string conta, int limitePix) {
-        this.cpf = cpf;
-        this.agencia = agencia;
-        this.conta = conta;
-        this.limitePix = limitePix;
     }
-
-    public static Limite Buscar(string agencia, string conta) {
-        throw new NotImplementedException();
-    }
-    
-    public static void Atualizar(string agencia, string conta, int limitePix) {
-        throw new NotImplementedException();
-    }
-
-    public static void Remover(string numeroAgencia, string conta) {
-        new NotImplementedException();
-    }
-    
 }

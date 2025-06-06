@@ -1,7 +1,14 @@
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
+using FraudSys.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
+builder.Services.AddSingleton<IDynamoDBContext, DynamoDBContext>();
+builder.Services.AddScoped<ILimiteRepository, LimiteRepository>();
 
 var app = builder.Build();
 

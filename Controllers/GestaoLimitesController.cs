@@ -1,44 +1,38 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using FraudSys.Models;
+using FraudSys.Repositories;
 
 namespace FraudSys.Controllers;
 
 public class GestaoLimitesController : Controller
 {
     private readonly ILogger<GestaoLimitesController> _logger;
+    private readonly ILimiteRepository _repository;
 
-    public GestaoLimitesController(ILogger<GestaoLimitesController> logger)
+    public GestaoLimitesController(ILogger<GestaoLimitesController> logger, ILimiteRepository repository)
     {
         _logger = logger;
+        _repository = repository;
     }
 
     public IActionResult Index()
     {
         return View();
     }
-
-    public IActionResult CadastrarLimite() 
+    public IActionResult ViewCadastrarLimite() 
     {
         return View();
     }
-
-    public IActionResult NovoCadastro(Limite model) 
-    {
-        return RedirectToAction("Index");
-    }
-
-    public IActionResult BuscarLimite() 
+    public IActionResult ViewBuscarLimite() 
     {
         return View();
     }
-
-    public IActionResult AtualizarLimite() 
+    public IActionResult ViewAtualizarLimite() 
     {
         return View();
     }
-
-    public IActionResult RemoverLimite() 
+    public IActionResult ViewRemoverLimite() 
     {
         return View();
     }
@@ -47,5 +41,30 @@ public class GestaoLimitesController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Cadastrar(Limite limite) 
+    {
+        await _repository.Cadastrar(limite);
+        return Ok();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Buscar(string agencia, string conta) {
+        var lista = await _repository.Buscar(agencia, conta);
+        return Ok(lista);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Atualizar(Limite limite) {
+        await _repository.Atualizar(limite);
+        return Ok();
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Deletar(string agencia, string conta) {
+        await _repository.Remover(agencia, conta);
+        return Ok();
     }
 }
