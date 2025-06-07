@@ -64,10 +64,19 @@ public class GestaoLimitesController : Controller
     
     }
 
-    [HttpPut]
+    [HttpPost]
     public async Task<IActionResult> Atualizar(Limite limite) {
-        await _repository.Atualizar(limite);
-        return Ok();
+        var meuLimite = await _repository.Buscar(limite.agencia, limite.conta);
+
+        if (meuLimite == null) {
+            ViewBag.Message = "Registro não encontrado para atualização.";
+            return View("AtualizarLimite");
+        }
+
+        meuLimite.limitePix = limite.limitePix;
+        await _repository.Atualizar(meuLimite);
+
+        return RedirectToAction("Index");
     }
 
     [HttpDelete]

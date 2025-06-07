@@ -2,7 +2,25 @@
     ViewData["Title"] = "Gestão de Limites - Atualizar";
 }
 
+@model FraudSys.Models.Limite;
+
 <div class="text-center">
     <h1 class="display-4">Gestão de Limites</h1>
     <h2 class="display-6">Atualizar limite</h1>
 </div>
+
+<form asp-action="Atualizar" asp-controller="GestaoLimites">
+    <label>Número da agência</label>
+    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" />
+    <label>Número da conta</label>
+    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" />
+    <label>Novo limite PIX da conta R$</label>
+    <input class="form-control mb-2" type="decimal" placeholder="1000" asp-for="limitePix" />
+
+    <button class="btn btn-primary mt-4" type="submit">Atualizar</button>
+</form>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-warning mt-4">@ViewBag.Message</div>
+}
