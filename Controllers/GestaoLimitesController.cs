@@ -16,24 +16,20 @@ public class GestaoLimitesController : Controller
         _repository = repository;
     }
 
-    public IActionResult Index()
-    {
+    public async Task<IActionResult> Index() {
+        var todosOsLimites = await _repository.BuscarTodos();
+        return View(todosOsLimites);
+    }
+    public IActionResult CadastrarLimite() {
         return View();
     }
-    public IActionResult CadastrarLimite() 
-    {
+    public IActionResult BuscarLimite() {
         return View();
     }
-    public IActionResult BuscarLimite() 
-    {
+    public IActionResult AtualizarLimite() {
         return View();
     }
-    public IActionResult AtualizarLimite() 
-    {
-        return View();
-    }
-    public IActionResult RemoverLimite() 
-    {
+    public IActionResult RemoverLimite() {
         return View();
     }
 
@@ -61,7 +57,6 @@ public class GestaoLimitesController : Controller
             ViewBag.Message = "Nenhum resultado encontrado.";
             return View("BuscarLimite");
         }
-    
     }
 
     [HttpPost]
@@ -90,5 +85,41 @@ public class GestaoLimitesController : Controller
 
         await _repository.Remover(agencia, conta);
         return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    [Route("api/limites/processar-pix")]
+    public async Task<IActionResult> ProcessarPix([FromBody] TransacaoPix transacao) {
+        // Validar dados da transação.
+        if (transacao == null || string.IsNullOrEmpty(transacao.conta) || string.IsNullOrEmpty(transacao.agencia) || transacao.valor <= 0) {
+            return BadRequest(new { aprovada = false, mensagem = "Dados da transação são inválidos. Tente novamente!" });
+        }
+
+        // Fetch limite da conta desejada.
+        var meuLimite = await _repository.Buscar(transacao.agencia, transacao.conta);
+
+        if (meuLimite == null) {
+            // Conta não cadastrada.
+            return NotFound(new { aprovada = false, mensagem = "Cliente não possui limite cadastrado." });
+        }
+
+        // Conferir se o valor da transação está dentro do limite.
+        if (meuLimite.limitePix >= transacao.valor) {
+            // Aprovada! Descontar o valor do limite.
+            meuLimite.limitePix -= transacao.valor;
+            await _repository.Atualizar(meuLimite);
+            return Ok(new {
+                aprovada = true,
+                mensagem = "Transação PIX aprovada.",
+                limiteAtual = meuLimite.limitePix
+            });
+        } else {
+            // Negada! Limite não é consumido.
+            return Ok(new {
+                aprovada = false,
+                mensagem = "Transação negada por limite insuficiente.",
+                limiteAtual = meuLimite.limitePix
+            });
+        }
     }
 }

@@ -24,6 +24,11 @@ namespace FraudSys.Repositories {
             return list.FirstOrDefault();
         }
 
+        public async Task<IEnumerable<Limite>> BuscarTodos() {
+            var conditions = new List<ScanCondition>();
+            return await _context.ScanAsync<Limite>(conditions).GetRemainingAsync();
+        }
+
         public async Task Remover(string agencia, string conta) {
             await _context.DeleteAsync<Limite>(agencia, conta);
         }
