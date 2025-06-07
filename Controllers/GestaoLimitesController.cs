@@ -79,9 +79,16 @@ public class GestaoLimitesController : Controller
         return RedirectToAction("Index");
     }
 
-    [HttpDelete]
+    [HttpPost]
     public async Task<IActionResult> Deletar(string agencia, string conta) {
+        var meuLimite = await _repository.Buscar(agencia, conta);
+
+        if (meuLimite == null) {
+            ViewBag.Message = "Registro não encontrado para deleção.";
+            return View("RemoverLimite");
+        }
+
         await _repository.Remover(agencia, conta);
-        return Ok();
+        return RedirectToAction("Index");
     }
 }
