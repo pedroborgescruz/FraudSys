@@ -10,8 +10,7 @@ public class GestaoLimitesController : Controller
     private readonly ILogger<GestaoLimitesController> _logger;
     private readonly ILimiteRepository _repository;
 
-    public GestaoLimitesController(ILogger<GestaoLimitesController> logger, ILimiteRepository repository)
-    {
+    public GestaoLimitesController(ILogger<GestaoLimitesController> logger, ILimiteRepository repository) {
         _logger = logger;
         _repository = repository;
     }
@@ -20,28 +19,46 @@ public class GestaoLimitesController : Controller
         var todosOsLimites = await _repository.BuscarTodos();
         return View(todosOsLimites);
     }
+
     public IActionResult CadastrarLimite() {
         return View();
     }
+
     public IActionResult BuscarLimite() {
         return View();
     }
-    public IActionResult AtualizarLimite() {
-        return View();
+
+    public async Task<IActionResult> AtualizarLimite(string agencia, string conta) {
+        if (string.IsNullOrEmpty(agencia) || string.IsNullOrEmpty(conta)) {
+            return View();
+        }
+        var limite = await _repository.Buscar(agencia, conta);
+        if (limite == null) {
+            return NotFound();
+        }
+
+        return View(limite);
     }
-    public IActionResult RemoverLimite() {
-        return View();
+
+    public async Task<IActionResult> RemoverLimite(string agencia, string conta) {
+        if (string.IsNullOrEmpty(agencia) || string.IsNullOrEmpty(conta)) {
+            return View();
+        }
+        var limite = await _repository.Buscar(agencia, conta);
+        if (limite == null) {
+            return NotFound();
+        }
+
+        return View(limite);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
+    public IActionResult Error() {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
     [HttpPost]
-    public async Task<IActionResult> Cadastrar(Limite limite) 
-    {
+    public async Task<IActionResult> Cadastrar(Limite limite)  {
         await _repository.Cadastrar(limite);
         return RedirectToAction("Index");
     }
@@ -52,8 +69,7 @@ public class GestaoLimitesController : Controller
 
         if (res != null) {
             return View("BuscarLimite", res);
-        }
-        else {
+        } else {
             ViewBag.Message = "Nenhum resultado encontrado.";
             return View("BuscarLimite");
         }
