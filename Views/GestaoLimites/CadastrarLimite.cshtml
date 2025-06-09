@@ -11,13 +11,17 @@
 
 <form asp-action="Cadastrar" asp-controller="GestaoLimites">
     <label>CPF</label>
-    <input class="form-control mb-2" type="string" placeholder="XXX.XXX.XXX-XX" asp-for="cpf" />
+    <input class="form-control mb-2" type="string" placeholder="XXX.XXX.XXX-XX" asp-for="cpf" required/>
     <label>Número da agência</label>
-    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" />
+    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" required/>
     <label>Número da conta</label>
-    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" />
+    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" required/>
     <label>Limite PIX R$</label>
-    <input class="form-control mb-2" type="decimal" placeholder="0" asp-for="limitePix" step="0.01" />
+    <input class="form-control mb-2" type="decimal" placeholder="0" asp-for="limitePix" step="0.01" required/>
 
     <button class="btn btn-primary mt-4" type="submit">Cadastrar</button>
 </form>
+
+@if (ViewBag.Message != null) {
+    <div class="alert alert-warning mt-4">@ViewBag.Message</div>
+}

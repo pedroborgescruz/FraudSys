@@ -9,14 +9,25 @@
     <h2 class="display-6">Remover limite</h1>
 </div>
 
-<form asp-action="Deletar" asp-controller="GestaoLimites">
-    <label>Número da agência</label>
-    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" readonly/>
-    <label>Número da conta</label>
-    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" readonly/>
+@if (Model != null) {
+    <form asp-action="Deletar" asp-controller="GestaoLimites">
+        <label>Número da agência</label>
+        <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" readonly/>
+        <label>Número da conta</label>
+        <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" readonly/>
 
-    <button class="btn btn-primary mt-4" type="submit">Deletar</button>
-</form>
+        <button class="btn btn-primary mt-4" type="submit">Deletar</button>
+    </form>
+} else {
+    <form asp-action="Deletar" asp-controller="GestaoLimites">
+        <label>Número da agência</label>
+        <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" />
+        <label>Número da conta</label>
+        <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" />
+
+        <button class="btn btn-primary mt-4" type="submit">Deletar</button>
+    </form>
+}
 
 @if (ViewBag.Message != null) {
     <div class="alert alert-warning mt-4">@ViewBag.Message</div>

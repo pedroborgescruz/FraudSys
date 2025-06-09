@@ -11,9 +11,9 @@
 
 <form asp-action="Buscar" asp-controller="GestaoLimites">
     <label>Número da agência</label>
-    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" />
+    <input class="form-control mb-2" type="string" placeholder="1234" asp-for="agencia" required/>
     <label>Número da conta</label>
-    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" />
+    <input class="form-control mb-2" type="string" placeholder="12345678" asp-for="conta" required/>
 
     <button class="btn btn-primary mt-4" type="submit">Buscar</button>
 </form>

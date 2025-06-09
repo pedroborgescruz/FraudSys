@@ -46,7 +46,8 @@ public class GestaoLimitesController : Controller
         }
         var limite = await _repository.Buscar(agencia, conta);
         if (limite == null) {
-            return NotFound();
+            ViewBag.Message = "Não há limite cadastrado para a conta inserida";
+            return View();
         }
 
         return View(limite);
@@ -76,6 +77,12 @@ public class GestaoLimitesController : Controller
 
     [HttpPost]
     public async Task<IActionResult> Cadastrar(Limite limite)  {
+        var limiteExistente = await _repository.Buscar(limite.agencia, limite.conta);
+
+        if (limiteExistente != null) { // Limite já existe
+            ViewBag.Message = "Já existe um limite cadastrado para esta conta.";
+            return View("CadastrarLimite");
+        }
         await _repository.Cadastrar(limite);
         return RedirectToAction("Index");
     }
@@ -138,6 +145,7 @@ public class GestaoLimitesController : Controller
             // Conta não cadastrada.
             ViewBag.TransacaoFeita = false;
             ViewBag.Message = "Cliente não possui limite cadastrado.";
+            return View("DetalhesLimite", transacao);
         }
 
         transacao.detalhesLimite = meuLimite;
