@@ -11,3 +11,5 @@
 .vs/
 *.suo
 *.user
+# Ignora o arquivo .env especificamente na pasta src
+src/.env
