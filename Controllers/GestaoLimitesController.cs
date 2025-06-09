@@ -52,6 +52,23 @@ public class GestaoLimitesController : Controller
         return View(limite);
     }
 
+    public async Task<IActionResult> DetalhesLimite(string agencia, string conta) {
+        if (string.IsNullOrEmpty(agencia) || string.IsNullOrEmpty(conta)) {
+            return View();
+        }
+        var limite = await _repository.Buscar(agencia, conta);
+        if (limite == null) {
+            return NotFound();
+        }
+        
+        var detalhes = new DetalhesTransacao {
+            detalhesLimite = limite,
+            valorTransacao = 0
+        };
+
+        return View(detalhes);
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
@@ -82,12 +99,14 @@ public class GestaoLimitesController : Controller
         if (meuLimite == null) {
             ViewBag.Message = "Registro não encontrado para atualização.";
             return View("AtualizarLimite");
+        } else {
+            meuLimite.limitePix = limite.limitePix;
+            await _repository.Atualizar(meuLimite);
+
+            ViewBag.Message = "Sucesso! Limite atualizado.";
         }
 
-        meuLimite.limitePix = limite.limitePix;
-        await _repository.Atualizar(meuLimite);
-
-        return RedirectToAction("Index");
+        return View("AtualizarLimite");
     }
 
     [HttpPost]
@@ -104,38 +123,36 @@ public class GestaoLimitesController : Controller
     }
 
     [HttpPost]
-    [Route("api/limites/processar-pix")]
-    public async Task<IActionResult> ProcessarPix([FromBody] TransacaoPix transacao) {
+    public async Task<IActionResult> ProcessarPix(DetalhesTransacao transacao) {
         // Validar dados da transação.
-        if (transacao == null || string.IsNullOrEmpty(transacao.conta) || string.IsNullOrEmpty(transacao.agencia) || transacao.valor <= 0) {
-            return BadRequest(new { aprovada = false, mensagem = "Dados da transação são inválidos. Tente novamente!" });
+        if (transacao == null || string.IsNullOrEmpty(transacao.detalhesLimite.conta) || string.IsNullOrEmpty(transacao.detalhesLimite.agencia) || transacao.valorTransacao <= 0) {
+            ViewBag.TransacaoFeita = false;
+            ViewBag.Message = "Dados da transação são inválidos. Tente novamente!";
+            return View("DetalhesLimite", transacao);
         }
 
         // Fetch limite da conta desejada.
-        var meuLimite = await _repository.Buscar(transacao.agencia, transacao.conta);
+        var meuLimite = await _repository.Buscar(transacao.detalhesLimite.agencia, transacao.detalhesLimite.conta);
 
         if (meuLimite == null) {
             // Conta não cadastrada.
-            return NotFound(new { aprovada = false, mensagem = "Cliente não possui limite cadastrado." });
+            ViewBag.TransacaoFeita = false;
+            ViewBag.Message = "Cliente não possui limite cadastrado.";
         }
 
+        transacao.detalhesLimite = meuLimite;
+
         // Conferir se o valor da transação está dentro do limite.
-        if (meuLimite.limitePix >= transacao.valor) {
-            // Aprovada! Descontar o valor do limite.
-            meuLimite.limitePix -= transacao.valor;
+        if (meuLimite.limitePix >= transacao.valorTransacao) { // Transação aprovada.
+            meuLimite.limitePix -= transacao.valorTransacao;
             await _repository.Atualizar(meuLimite);
-            return Ok(new {
-                aprovada = true,
-                mensagem = "Transação PIX aprovada.",
-                limiteAtual = meuLimite.limitePix
-            });
-        } else {
-            // Negada! Limite não é consumido.
-            return Ok(new {
-                aprovada = false,
-                mensagem = "Transação negada por limite insuficiente.",
-                limiteAtual = meuLimite.limitePix
-            });
+            transacao.detalhesLimite = meuLimite;
+            ViewBag.Message = "Sucesso! Transação realizada.";
+            ViewBag.TransacaoFeita = true;
+        } else { // Transação não autorizada.
+            ViewBag.TransacaoFeita = false;
+            ViewBag.Message = "Transação não realizada. Limite não suficiente.";
         }
+        return View("DetalhesLimite", transacao);
     }
 }

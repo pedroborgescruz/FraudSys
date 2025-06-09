@@ -18,8 +18,7 @@
     <button class="btn btn-primary mt-4" type="submit">Buscar</button>
 </form>
 
-@if (Model != null)
-{
+@if (Model != null) {
     <div class="alert alert-success mt-4">
         <strong>Sucesso! Há o seguinte limite para a conta solicitada:</strong><br />
         CPF: @Model.cpf<br />
@@ -27,8 +26,6 @@
         Conta: @Model.conta<br />
         Limite: @Model.limitePix
     </div>
-}
-else if (ViewBag.Message != null)
-{
+} else if (ViewBag.Message != null) {
     <div class="alert alert-warning mt-4">@ViewBag.Message</div>
 }
