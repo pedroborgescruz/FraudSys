@@ -5,8 +5,11 @@ using FraudSys.Repositories;
 
 namespace FraudSys.Controllers;
 
-public class GestaoLimitesController : Controller
-{
+/// <summary>
+/// Controla as ações relacionadas à gestão de limites de contas (cadastro, 
+/// busca, atualização e processamento de transações).
+/// </summary>
+public class GestaoLimitesController : Controller {
     private readonly ILogger<GestaoLimitesController> _logger;
     private readonly ILimiteRepository _repository;
 
@@ -15,19 +18,37 @@ public class GestaoLimitesController : Controller
         _repository = repository;
     }
 
+    /// <summary>
+    /// Exibe a view inicial com a lista de todos os limites cadastrados.
+    /// </summary>
+    /// <returns>A view Index com a lista de limites.</returns>
     public async Task<IActionResult> Index() {
         var todosOsLimites = await _repository.BuscarTodos();
         return View(todosOsLimites);
     }
 
+    /// <summary>
+    /// Exibe a view de cadastro de novo limite.
+    /// </summary>
+    /// <returns>A view CadastrarLimite.</returns>
     public IActionResult CadastrarLimite() {
         return View();
     }
 
+    /// <summary>
+    /// Exibe a view de busca de limite.
+    /// </summary>
+    /// <returns>A view BuscarLimite.</returns>
     public IActionResult BuscarLimite() {
         return View();
     }
 
+    /// <summary>
+    /// Exibe a view para atualizar o limite de uma conta específica.
+    /// </summary>
+    /// <param name="agencia">O número da agência da conta.</param>
+    /// <param name="conta">O número da conta.</param>
+    /// <returns>A view AtualizarLimite com os dados da conta ou NotFound se não for encontrada.</returns>
     public async Task<IActionResult> AtualizarLimite(string agencia, string conta) {
         if (string.IsNullOrEmpty(agencia) || string.IsNullOrEmpty(conta)) {
             return View();
@@ -40,10 +61,17 @@ public class GestaoLimitesController : Controller
         return View(limite);
     }
 
+    /// <summary>
+    /// Exibe a view para remover o limite de uma conta.
+    /// </summary>
+    /// <param name="agencia">O número da agência da conta.</param>
+    /// <param name="conta">O número da conta.</param>
+    /// <returns>A view RemoverLimite com os dados da conta.</returns>
     public async Task<IActionResult> RemoverLimite(string agencia, string conta) {
         if (string.IsNullOrEmpty(agencia) || string.IsNullOrEmpty(conta)) {
             return View();
         }
+
         var limite = await _repository.Buscar(agencia, conta);
         if (limite == null) {
             ViewBag.Message = "Não há limite cadastrado para a conta inserida";
@@ -53,15 +81,25 @@ public class GestaoLimitesController : Controller
         return View(limite);
     }
 
+    /// <summary>
+    /// Exibe os detalhes de uma conta e o endpoint para simular uma transação PIX.
+    /// </summary>
+    /// <param name="agencia">O número da agência da conta.</param>
+    /// <param name="conta">O número da conta.</param>
+    /// <returns>A view DetalhesLimite com os dados da conta ou NotFound se não for encontrado um cadastro.</returns>
     public async Task<IActionResult> DetalhesLimite(string agencia, string conta) {
+        // Validar dados da transação.
         if (string.IsNullOrEmpty(agencia) || string.IsNullOrEmpty(conta)) {
             return View();
         }
+
+        // Checar se o cadastro existe no banco de dados.
         var limite = await _repository.Buscar(agencia, conta);
         if (limite == null) {
             return NotFound();
         }
         
+        // Instanciar um objeto da classe DetalhesTransacao
         var detalhes = new DetalhesTransacao {
             detalhesLimite = limite,
             valorTransacao = 0
@@ -70,11 +108,22 @@ public class GestaoLimitesController : Controller
         return View(detalhes);
     }
 
+    /// <summary>
+    /// Exibe a view de erro padrão da aplicação.
+    /// </summary>
+    /// <returns>A view de erro com o RequestId.</returns>
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
+    /// <summary>
+    /// Processa o envio do formulário de cadastro de um novo limite.
+    /// </summary>
+    /// <param name="limite">O objeto Limite preenchido com os dados do 
+    /// formulário.</param>
+    /// <returns>Redireciona para a view Index em caso de sucesso ou retorna a 
+    /// view com uma mensagem de erro.</returns>
     [HttpPost]
     public async Task<IActionResult> Cadastrar(Limite limite)  {
         var limiteExistente = await _repository.Buscar(limite.agencia, limite.conta);
@@ -87,6 +136,14 @@ public class GestaoLimitesController : Controller
         return RedirectToAction("Index");
     }
 
+    /// <summary>
+    /// Processa a busca por um limite de conta com base na primary key 
+    /// fornecida.
+    /// </summary>
+    /// <param name="limite">Objeto contendo a agência e conta a serem 
+    /// buscadas.</param>
+    /// <returns>A view BuscarLimite com o resultado da busca ou uma mensagem 
+    /// de erro.</returns>
     [HttpPost]
     public async Task<IActionResult> Buscar(Limite limite) {
         var res = await _repository.Buscar(limite.agencia, limite.conta);
@@ -99,6 +156,13 @@ public class GestaoLimitesController : Controller
         }
     }
 
+    /// <summary>
+    /// Processa a atualização do valor do limite de uma conta.
+    /// </summary>
+    /// <param name="limite">Objeto contendo a agência, conta e o 
+    /// novo valor do limite.</param>
+    /// <returns>A view AtualizarLimite com uma mensagem de 
+    /// sucesso ou erro.</returns>
     [HttpPost]
     public async Task<IActionResult> Atualizar(Limite limite) {
         var meuLimite = await _repository.Buscar(limite.agencia, limite.conta);
@@ -116,6 +180,14 @@ public class GestaoLimitesController : Controller
         return View("AtualizarLimite");
     }
 
+    /// <summary>
+    /// Processa a remoção de um registro de limite de conta.
+    /// </summary>
+    /// <param name="agencia">O número da agência da conta a ser 
+    /// removida.</param>
+    /// <param name="conta">O número da conta a ser removida.</param>
+    /// <returns>Redireciona para a view Index em caso de sucesso ou retorna a 
+    /// view com uma mensagem de erro.</returns>
     [HttpPost]
     public async Task<IActionResult> Deletar(string agencia, string conta) {
         var meuLimite = await _repository.Buscar(agencia, conta);
@@ -129,6 +201,14 @@ public class GestaoLimitesController : Controller
         return RedirectToAction("Index");
     }
 
+    /// <summary>
+    /// Processa uma transação PIX, validando-a contra o limite da conta e 
+    /// atualizando o saldo se aprovada.
+    /// </summary>
+    /// <param name="transacao">Os detalhes da transação, incluindo o cadastro
+    /// de limite PIX e o valor.</param>
+    /// <returns>A view DetalhesLimite com o resultado da transação
+    /// (aprovada ou negada) e o limite atualizado.</returns>
     [HttpPost]
     public async Task<IActionResult> ProcessarPix(DetalhesTransacao transacao) {
         // Validar dados da transação.
