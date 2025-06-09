@@ -40,8 +40,7 @@ Este repositório contém o código para uma aplicação ASP.NET Core MVC desenv
     * Credenciais da AWS configuradas no seu ambiente (a aplicação usa o SDK para se autenticar).
 
 2.  **Configuração**:
-    * Clone o repositório: `git clone https://github.com/pedroborgescruz/FraudSys.git`
-    * Navegue até a pasta do projeto no seu terminal.
+    * Navegue até a pasta `FraudSys/src` do projeto no seu terminal.
 
 3.  **Execução**:
     * Execute o comando `dotnet run` no seu terminal.
