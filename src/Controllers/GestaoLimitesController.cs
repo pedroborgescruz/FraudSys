@@ -198,6 +198,7 @@ public class GestaoLimitesController : Controller {
         }
 
         await _repository.Remover(agencia, conta);
+        ViewBag.Message = "Registro deletado com sucesso.";
         return RedirectToAction("Index");
     }
 

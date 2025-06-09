@@ -1,3 +1,6 @@
+# Arquivos de sistema do macOS
+.DS_Store
+
 # Pasta de binários compilados
 [Bb]in/
 
