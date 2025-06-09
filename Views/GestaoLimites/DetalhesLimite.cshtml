@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Gestão de Limites";
+}
+
+@model FraudSys.Models.DetalhesTransacao;
+
+<div class="text-center">
+    <h1 class="display-6">Detalhes do Limite</h1>    
+    <div class="alert alert-primary mt-4">
+        <strong>Documento (CPF):</strong> @Model.detalhesLimite.cpf<br />
+        <strong>Agência:</strong> @Model.detalhesLimite.agencia<br />
+        <strong>Conta:</strong> @Model.detalhesLimite.conta<br />
+        <strong>Limite:</strong> R$ @Model.detalhesLimite.limitePix.ToString("N2")
+    </div>
+</div>
+
+<hr />
+
+<h4>Realizar Transação PIX</h4>
+<form asp-action="ProcessarPix" asp-controller="GestaoLimites">
+    <input type="hidden" asp-for="detalhesLimite.cpf" />
+    <input type="hidden" asp-for="detalhesLimite.agencia" />
+    <input type="hidden" asp-for="detalhesLimite.conta" />
+    <input type="hidden" asp-for="detalhesLimite.limitePix" />
+
+    <label>Valor da Transação R$</label>
+    <input class="form-control mb-2" type="decimal" asp-for="valorTransacao" required/>
+
+    <button class="btn btn-primary mt-4" type="submit">Enviar PIX</button>
+</form>
+
+@if (ViewBag.TransacaoFeita != null) {
+    @if (ViewBag.TransacaoFeita == true) {
+    <div class="alert alert-success mt-4">
+        <strong>@ViewBag.Message</strong> Detalhes atualizados:<br />
+        Agência: @Model.detalhesLimite.agencia<br />
+        Conta: @Model.detalhesLimite.conta<br />
+        Limite: R$@Model.detalhesLimite.limitePix.ToString("N2")
+    </div>
+    } else {
+        <div class="alert alert-warning mt-4">@ViewBag.Message</div>
+    }
+}

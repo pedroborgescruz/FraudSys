@@ -1,0 +1,5 @@
+# Pasta de binários compilados
+[Bb]in/
+
+# Pasta de arquivos temporários de compilação
+[Oo]bj/
