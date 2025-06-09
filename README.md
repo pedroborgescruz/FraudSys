@@ -13,6 +13,26 @@ Este repositório contém o código para uma aplicação ASP.NET Core MVC desenv
 - **Backend**: .NET 8, ASP.NET Core MVC
 - **Banco de Dados**: AWS DynamoDB
 
+## ⚙Configuração do Ambiente
+
+1.  **Clone o repositório:**
+    ```bash
+    git clone https://github.com/pedroborgescruz/FraudSys.git
+    cd FraudSys
+    ```
+
+2.  **Configure as credenciais:**
+    - As credenciais de acesso temporárias da AWS (`Access Key ID` e `Secret Access Key`) foram enviadas por e-mail.
+    - Na raiz do projeto, renomeie o arquivo `.env.example` para `.env`.
+    - Abra o arquivo `.env` e cole as credenciais fornecidas.
+
+    O arquivo `.env` deve ficar assim:
+    ```bash
+    AWS_ACCESS_KEY_ID="AKI...EXEMPLO"
+    AWS_SECRET_ACCESS_KEY="A+b/C...exemplo"
+    AWS_REGION="us-east-2"
+    ```
+
 ## Como Executar o Projeto
 
 1.  **Pré-requisitos**:
