@@ -66,3 +66,8 @@ Se eu estivesse trabalhando de forma mais integral no projeto (como se fosse no 
 4. Buscar limite: Verificar se o método retorna os dados corretos para um cenário válido (limite recém cadastrado na base de dados) e um cenário inválido (limite não existe na base de dados).
 5. Checar estado: Realizar uma série de operações nos dados de um limite cadastrado (por exemplo, Cadastrar > Buscar > Atualizar > Atualizar > Realizar PIX; etc.) e verificar se os dados permanecem sólidos a todo ponto.
 6. Checar limite deletado é realmente deletado: Deletar um limite no banco de dados e verificar que ele não consta mais na base.
+
+## Conclusões e Notas de Melhoria
+Este repositório centraliza o código com os requisitos essenciais para o desafio do FraudSys, entregando um sistema para CRUD e validação de limites de transação PIX utilizando .NET 8, MVC e DynamoDB. 
+
+Durante análise final, existem alguns pontos que, embora não impedissem a funcionalidade principal, representam ótimas oportunidades para evolução e aprimoramento do projeto em um cenário real. Um deles é a performance conforme o número de cadastros aumenta. Isso é essencial para uma aplicação de um banco como o BTG Pactual. Pensando nessa aplicação, foquei em funcionalidade e implementação simples. Contudo, o ideal seria interagir com a base de dados criando índices que pudessem facilitar na busca dos dados desejados.
