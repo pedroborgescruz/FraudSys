@@ -3,3 +3,8 @@
 
 # Pasta de arquivos temporários de compilação
 [Oo]bj/
+
+# Arquivos de configuração de IDE e usuário
+.vs/
+*.suo
+*.user
