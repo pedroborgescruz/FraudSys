@@ -2,6 +2,7 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using FraudSys.Models;
 using FraudSys.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace FraudSys.Controllers;
 
@@ -126,14 +127,26 @@ public class GestaoLimitesController : Controller {
     /// view com uma mensagem de erro.</returns>
     [HttpPost]
     public async Task<IActionResult> Cadastrar(Limite limite)  {
-        var limiteExistente = await _repository.Buscar(limite.agencia, limite.conta);
+        // var limiteExistente = await _repository.Buscar(limite.agencia, limite.conta);
 
-        if (limiteExistente != null) { // Limite já existe
-            ViewBag.Message = "Já existe um limite cadastrado para esta conta.";
-            return View("CadastrarLimite");
+        // if (limiteExistente != null) { // Limite já existe
+        //     ViewBag.Message = "Já existe um limite cadastrado para esta conta.";
+        //     return View("CadastrarLimite");
+        // }
+        // await _repository.Cadastrar(limite);
+        // return RedirectToAction("Index");
+
+        try {
+            if (ModelState.IsValid) {
+                await _repository.Cadastrar(limite);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(limite);
+        } catch (ValidationException ex) {
+            // Captura o erro do repositório e mostra na tela.
+            ModelState.AddModelError(string.Empty, ex.Message);
+            return View(limite);
         }
-        await _repository.Cadastrar(limite);
-        return RedirectToAction("Index");
     }
 
     /// <summary>

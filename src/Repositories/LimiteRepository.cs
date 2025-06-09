@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Amazon.DynamoDBv2.DataModel;
 using FraudSys.Models;
 
@@ -22,6 +23,14 @@ namespace FraudSys.Repositories {
 
         public async Task Cadastrar(Limite limite) {
             // SaveAsync (DynamoDBContext Doc): criar um novo item.
+            var validationContext = new ValidationContext(limite, null, null);
+            var validationResults = new List<ValidationResult>();
+
+            bool isValid = Validator.TryValidateObject(limite, validationContext, validationResults, true);
+
+            if (!isValid) {
+                throw new ValidationException($"O objeto Limite é inválido: {string.Join(", ", validationResults.Select(e => e.ErrorMessage))}");
+            }
             await _context.SaveAsync(limite);
         }
 
