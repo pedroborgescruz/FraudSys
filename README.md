@@ -13,7 +13,7 @@ Este repositório contém o código para uma aplicação ASP.NET Core MVC desenv
 - **Backend**: .NET 8, ASP.NET Core MVC
 - **Banco de Dados**: AWS DynamoDB
 
-## ⚙Configuração do Ambiente
+## Configuração do Ambiente
 
 1.  **Clone o repositório:**
     ```bash
@@ -45,6 +45,11 @@ Este repositório contém o código para uma aplicação ASP.NET Core MVC desenv
 3.  **Execução**:
     * Execute o comando `dotnet run` no seu terminal.
     * Acesse a aplicação em `https://localhost:[PORT]`.
+  
+## Instruções de Uso
+
+1. O gestor de limites está contido na página inicial da FraudSys e pode ser acessado ao clicar nos respectivos botões da plataforma.
+2. A ferramenta de transação PIX está localizada na View de detalhes do limite cadastrado.
 
 ## Testes Unitários
 
